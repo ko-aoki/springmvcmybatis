@@ -7,6 +7,8 @@ import com.example.entity.MstNews;
 import com.example.entity.MstRole;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -77,23 +79,25 @@ public class NewsServiceImpl implements NewsService {
     return newsMapper.selectOneNewsDto(id);
   }
 
-//  @Override
-//  public Page<NewsDto> findNewsPage(String subject, String roleId, String url, int pageNo) {
-//
-//    // ページあたり件数
-//    // TODO パラメータ化
-//    int sizePerPage = 5;
-//    // offset指定、最大100件、カウントあり
-//    int offset = pageNo * sizePerPage;
-//    SelectOptions selectOptions = SelectOptions.get().offset(offset).limit(100).count();
-//    // お知らせリスト取得
-//    List<NewsDto> newsDtoList = dao.selectNewsDtoByCond(subject, roleId, url, selectOptions);
-//    // 取得件数
-//    long count = selectOptions.getCount();
-//    // ページ内最終インデックス
-//    int lastIdxInPage = sizePerPage > newsDtoList.size() ? newsDtoList.size() : sizePerPage;
-//    // ページ情報作成
-//    return new PageImpl<>(
-//        newsDtoList.subList(0, lastIdxInPage), new PageRequest(pageNo, sizePerPage), count);
-//  }
+  @Override
+  public long countNews(String subject, String roleId, String url) {
+
+      return newsMapper.countByCond(subject, roleId, url);
+
+  }
+
+  @Override
+  public List<NewsDto> findNewsPage(String subject, String roleId, String url, int pageNo) {
+
+    // ページあたり件数
+    // TODO パラメータ化
+    int sizePerPage = 5;
+    Pageable page = PageRequest.of(pageNo, sizePerPage);
+
+    // お知らせリスト取得
+    List<NewsDto> newsDtoList = newsMapper.selectNewsDtoByCond(subject, roleId, url, page);
+
+    return newsDtoList;
+  }
+
 }

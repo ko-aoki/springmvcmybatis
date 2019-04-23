@@ -1,5 +1,6 @@
 package com.example.config;
 
+import nz.net.ultraq.thymeleaf.LayoutDialect;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -58,6 +59,8 @@ public class MvcConfig implements WebMvcConfigurer {
         templateEngine.addDialect(new Java8TimeDialect());
         // ThymeleafでSpring Securityを利用するDialectを追加
         templateEngine.addDialect(new SpringSecurityDialect());
+        // ThymeleafでLayoutを利用するDialectを追加
+        templateEngine.addDialect(new LayoutDialect());
         return templateEngine;
     }
 
@@ -73,6 +76,10 @@ public class MvcConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/css/**")
                 .addResourceLocations("classpath:/static/css/");
+        registry.addResourceHandler("/js/**")
+                .addResourceLocations("classpath:/static/js/");
+        registry.addResourceHandler("/fonts/**")
+                .addResourceLocations("classpath:/static/fonts/");
     }
 
     @Bean

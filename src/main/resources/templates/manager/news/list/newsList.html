@@ -120,17 +120,17 @@
                                             <span aria-hidden="true">«</span>
                                         </a>
                                     </li>
-                                    <li th:each="pageNum : ${#numbers.sequence(1, newsList.totalPages)}"
+                                    <li th:each="pageNum : ${#numbers.sequence(1, totalPages)}"
                                         th:classappend="${page == pageNum} ? 'active'">
                                         <a th:onclick="'pageJump(' + ${pageNum} + ');'" th:text="${pageNum}"></a>
                                     </li>
-                                    <li th:if="${page ge newsList.totalPages}" class="disabled">
+                                    <li th:if="${page ge totalPages}" class="disabled">
                                         <a aria-label="次のページへ">
                                             <span aria-hidden="true">»</span>
                                         </a>
                                     </li>
-                                    <li th:unless="${page ge newsList.totalPages}">
-                                        <a th:onclick="'pageJump(' + ${newsList.totalPages} + ');'"
+                                    <li th:unless="${page ge totalPages}">
+                                        <a th:onclick="'pageJump(' + ${totalPages} + ');'"
                                            aria-label="次のページへ">
                                             <span aria-hidden="true">»</span>
                                         </a>
@@ -153,7 +153,7 @@
                                 <th>URL</th>
                             </tr>
                             </thead>
-                            <div th:remove="tag" th:each="news : ${newsList.content}">
+                            <div th:remove="tag" th:each="news : ${newsList}">
                                 <tr th:classappend="${newsStat.odd} ? 'bg-info'">
                                     <td rowspan="2" th:text="${news.id}"></td>
                                     <td rowspan="2" th:text="${news.roleNm}"></td>

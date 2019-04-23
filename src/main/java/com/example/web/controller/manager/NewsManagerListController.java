@@ -1,5 +1,6 @@
 package com.example.web.controller.manager;
 
+import com.example.dto.NewsDto;
 import com.example.service.NewsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import java.util.List;
 import java.util.Map;
 
 /** お知らせ管理リスト画面のコントローラクラス. */
@@ -47,18 +49,24 @@ public class NewsManagerListController {
   public String display(NewsListCondForm form, Model model) {
 
     int page;
+    int sizePerPage = 5;
+
     if (form.getPage() == null) {
       page = 0;
       form.setPage(1);
     } else {
       page = form.getPage() - 1;
     }
-//    Page<NewsDto> newsList =
-//        service.findNewsPage(form.getSubject(), form.getRoleId(), form.getUrl(), page);
-//    if (newsList != null && newsList.getTotalElements() > 0) {
-//      model.addAttribute("newsList", newsList);
-//    }
 
-    return "/manager/news/list/newsList";
+    long cnt = service.countNews(form.getSubject(), form.getRoleId(), form.getUrl());
+
+    List<NewsDto> newsList =
+        service.findNewsPage(form.getSubject(), form.getRoleId(), form.getUrl(), page);
+    if (newsList != null && newsList.size() > 0) {
+      model.addAttribute("totalPages", cnt / sizePerPage);
+      model.addAttribute("newsList", newsList);
+    }
+
+    return "manager/news/list/newsList";
   }
 }

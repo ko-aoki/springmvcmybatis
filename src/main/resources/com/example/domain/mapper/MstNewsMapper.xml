@@ -4,15 +4,15 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.domain.mapper.MstNewsMapper">
     <resultMap id="mstNews" type="com.example.entity.MstNews">
-        <id property="mstNewsId" column="mst_news_id" />
-        <id property="roleId" column="role_id" />
-        <id property="subject" column="subject" />
-        <id property="url" column="url" />
-        <id property="version" column="version" />
-        <id property="insertUser" column="insert_user" />
-        <id property="insertDate" column="insert_date" />
-        <id property="updateUser" column="update_user" />
-        <id property="updateDate" column="update_date" />
+        <id property="mstNewsId" column="mst_news_id"/>
+        <id property="roleId" column="role_id"/>
+        <id property="subject" column="subject"/>
+        <id property="url" column="url"/>
+        <id property="version" column="version"/>
+        <id property="insertUser" column="insert_user"/>
+        <id property="insertDate" column="insert_date"/>
+        <id property="updateUser" column="update_user"/>
+        <id property="updateDate" column="update_date"/>
     </resultMap>
     <select id="selectAll" resultMap="mstNews">
       select
@@ -26,12 +26,12 @@
       from mst_news
     </select>
     <resultMap id="newsDto" type="com.example.dto.NewsDto">
-        <id property="id" column="id" />
-        <id property="roleId" column="role_id" />
-        <id property="roleNm" column="role_nm" />
-        <id property="subject" column="subject" />
-        <id property="url" column="url" />
-        <id property="version" column="version" />
+        <id property="id" column="id"/>
+        <id property="roleId" column="role_id"/>
+        <id property="roleNm" column="role_nm"/>
+        <id property="subject" column="subject"/>
+        <id property="url" column="url"/>
+        <id property="version" column="version"/>
     </resultMap>
     <select id="selectOneNewsDto" resultMap="newsDto">
         select
@@ -77,4 +77,64 @@
               ,#{updateDate}
           )
       </insert>
+
+    <select id="countByCond" resultType="_int">
+        SELECT
+        count(*)
+        FROM
+        mst_news n
+        INNER JOIN
+        mst_role r
+        ON
+        n.role_id = r.role_id
+        <where>
+            <if test="subject != null and subject != ''">
+                and
+                n.subject like #{subject} || '%'
+            </if>
+            <if test="roleId != null and roleId != ''">
+                and
+                n.role_id = #{roleId}
+            </if>
+            <if test="url != null and url != ''">
+                and
+                n.url = #{url}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectNewsDtoByCond" resultMap="newsDto">
+        select
+        n.mst_news_id id,
+        n.role_id role_id,
+        r.role_name role_nm,
+        n.subject subject,
+        n.url url,
+        n.version
+        FROM
+        mst_news n
+        INNER JOIN
+        mst_role r
+        ON
+        n.role_id = r.role_id
+        <where>
+            <if test="subject != null and subject != ''">
+                and
+                n.subject like #{subject} || '%'
+            </if>
+            <if test="roleId != null and roleId != ''">
+                and
+                n.role_id = #{roleId}
+            </if>
+            <if test="url != null and url != ''">
+                and
+                n.url = #{url}
+            </if>
+        </where>
+        LIMIT
+        #{pageable.pageSize}
+        OFFSET
+        #{pageable.offset}
+    </select>
+
 </mapper>

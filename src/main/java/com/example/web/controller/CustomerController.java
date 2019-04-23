@@ -37,11 +37,6 @@ public class CustomerController {
         logger.info(mstEmployees.get(0).getEmployeeFirstName());
 
 
-        logger.info("---------------- insert ------------");
-        MstEmployee mstEmployee = mstEmployees.get(0);
-        mstEmployee.setEmployeeId(mstEmployee.getEmployeeId() + 1);
-        customerService.create(mstEmployee);
-
         return "index";
     }
 }

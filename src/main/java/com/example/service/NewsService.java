@@ -3,6 +3,7 @@ package com.example.service;
 import com.example.dto.NewsDto;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 
 /** お知らせ情報を操作するサービスインターフェース. */
@@ -47,13 +48,23 @@ public interface NewsService {
   NewsDto findNews(Long id);
 
   /**
+   * お知らせ情報の件数を取得します.
+   *
+   * @param subject:表題
+   * @param roleId:権限ID
+   * @param url:URL
+   * @return お知らせ情報件数
+   */
+  long countNews(String subject, String roleId, String url);
+
+  /**
    * お知らせ情報リストを検索します.
    *
    * @param subject:表題
    * @param roleId:権限ID
    * @param url:URL
-   * @param page:検索ページ
+   * @param pageNo:検索ページ
    * @return お知らせ情報ページ情報
    */
-//  Page<NewsDto> findNewsPage(String subject, String roleId, String url, int page);
+  List<NewsDto> findNewsPage(String subject, String roleId, String url, int pageNo);
 }

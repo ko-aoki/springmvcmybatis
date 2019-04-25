@@ -40,7 +40,7 @@
           r.role_name role_nm,
           n.subject subject,
           n.url url,
-          n.version version
+          n.version
         FROM
           mst_news n
         INNER JOIN
@@ -77,6 +77,17 @@
               ,#{updateDate}
           )
       </insert>
+
+    <update id="update" parameterType="MstEmployee">
+          UPDATE
+              mst_news
+          SET
+              role_id = #{roleId}
+              ,subject = #{subject}
+              ,url = #{url}
+          WHERE
+            mst_news_id = #{mstNewsId}
+      </update>
 
     <select id="countByCond" resultType="_int">
         SELECT

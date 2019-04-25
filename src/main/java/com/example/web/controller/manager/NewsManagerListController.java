@@ -63,7 +63,8 @@ public class NewsManagerListController {
     List<NewsDto> newsList =
         service.findNewsPage(form.getSubject(), form.getRoleId(), form.getUrl(), page);
     if (newsList != null && newsList.size() > 0) {
-      model.addAttribute("totalPages", cnt / sizePerPage);
+      long totalPages = (cnt % sizePerPage == 0) ? (cnt / sizePerPage) : cnt / sizePerPage + 1;
+      model.addAttribute("totalPages", totalPages);
       model.addAttribute("newsList", newsList);
     }
 

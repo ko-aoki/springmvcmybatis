@@ -14,11 +14,12 @@ public class MvcInitializer extends AbstractAnnotationConfigDispatcherServletIni
         return null;
     }
 
-    @Override
-    protected Class<?>[] getServletConfigClasses() {
-        return new Class[]{
-                MvcConfig.class, MyBatisConfig.class, ServiceConfig.class,};
-    }
+  @Override
+  protected Class<?>[] getServletConfigClasses() {
+    return new Class[] {
+            MvcConfig.class, MyBatisConfig.class, ServiceConfig.class, SecurityConfig.class
+    };
+  }
 
     @Override
     protected String[] getServletMappings() {

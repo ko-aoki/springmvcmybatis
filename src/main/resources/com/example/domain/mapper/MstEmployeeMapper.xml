@@ -14,6 +14,13 @@
         <id property="updateUser" column="update_user" />
         <id property="updateDate" column="update_date" />
     </resultMap>
+    <resultMap id="userInfo" type="com.example.security.UserInfo">
+        <id property="id" column="employee_id" />
+        <id property="employeeLastName" column="employee_last_name" />
+        <id property="employeeFirstName" column="employee_first_name" />
+        <id property="roleId" column="role_id" />
+        <id property="password" column="password" />
+    </resultMap>
     <select id="selectAll" resultMap="mstEmployee">
       select
           employee_id,
@@ -28,21 +35,30 @@
       from mst_Employee
       order by employee_id desc
     </select>
-    <select id="selectOne" resultMap="mstEmployee">
+    <select id="selectUser" resultMap="userInfo">
         SELECT
-          employee_id,
-          employee_last_name,
-          employee_first_name,
-          role_id,
-          version,
-          insert_user,
-          insert_date,
-          update_user,
-          update_date
-        FROM mst_employee
+          e.employee_id employee_id,
+          e.employee_last_name employee_last_name,
+          e.employee_first_name employee_first_name,
+          e.role_id role_id,
+          p.password
+        FROM
+          mst_employee e
+          INNER JOIN
+          mst_password p
+            ON
+              e.employee_id = p.employee_id
+          INNER JOIN
+          mst_role r
+            ON
+              e.role_id = r.role_id
         WHERE
-          employee_id = #{id};
-    </select>
+          e.employee_id = #{id}
+          AND
+          p.generation =
+          (SELECT MAX(generation) FROM mst_password p2
+            WHERE p2.employee_id = #{id});
+  </select>
     <insert id="create" parameterType="MstEmployee">
           insert into
               mst_Employee

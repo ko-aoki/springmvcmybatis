@@ -23,6 +23,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .mvcMatchers("/fonts/**");
   }
 
+
+    /**
+     *
+     * @param http
+     * @throws Exception
+     * @see <a href="Spring SecurityガイドFormログイン属性">
+     *     https://docs.spring.io/spring-security/site/docs/5.1.5.RELEASE/reference/htmlsingle/#nsa-form-login-attributes</a>
+     */
   @Override
   protected void configure(HttpSecurity http) throws Exception {
 
